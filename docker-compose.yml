@@ -29,7 +29,7 @@ services:
             TZ: '${LOCAL_TIMEZONE}'
         labels:            
             - 'docker-volume-backup.stop-during-backup=true'
-        command: bash -c "[ \"$$(ls -A ./basic)\" ] && composer update --prefer-dist cakephp/app:~4.0 --working-dir=./basic --no-interaction --with-all-dependencies || composer create-project --prefer-dist cakephp/app:~4.0 basic --no-interaction && php-fpm"
+        command: bash -c "curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && [ \"$$(ls -A ./basic)\" ] && composer update --prefer-dist cakephp/app:~4.0 --working-dir=./basic --no-interaction --with-all-dependencies || composer create-project --prefer-dist cakephp/app:~4.0 basic --no-interaction && php-fpm"
 
     webserver:
         depends_on:
