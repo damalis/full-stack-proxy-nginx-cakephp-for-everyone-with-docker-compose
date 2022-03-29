@@ -10,7 +10,7 @@ Plus, manage docker containers with Portainer.
 
 With this project you can quickly run the following:
 
-- [cakephp (php-fpm)](https://github.com/cakephp/app)
+- [cakephp](https://github.com/cakephp/app) - [php-fpm](https://hub.docker.com/_/php?tab=tags&page=1&name=fpm)
 - [webserver (apache2/httpd)](https://hub.docker.com/_/httpd)
 - [proxy (nginx)](https://hub.docker.com/_/nginx)
 - [certbot (letsencrypt)](https://hub.docker.com/r/certbot/certbot)
