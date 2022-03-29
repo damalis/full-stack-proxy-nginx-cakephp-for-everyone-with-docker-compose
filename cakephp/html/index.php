@@ -1,94 +1,40 @@
 <?php
+/**
+ * The Front Controller for handling every request
+ *
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
+ * @since         0.2.9
+ * @license       MIT License (https://opensource.org/licenses/mit-license.php)
+ */
 
-// comment out the following two lines when deployed to production
-defined('YII_DEBUG') or define('YII_DEBUG', true);
-defined('YII_ENV') or define('YII_ENV', 'dev');
+// Check platform requirements
+require '/app/basic/config/requirements.php';
 
-require 'basic/vendor/autoload.php';
-require 'basic/vendor/yiisoft/yii2/Yii.php';
+// For built-in server
+if (PHP_SAPI === 'cli-server') {
+    $_SERVER['PHP_SELF'] = '/' . basename(__FILE__);
 
-$config = [
-    'id' => 'basic',
-    'basePath' => '/app/basic',
-    'bootstrap' => ['log'],
-    'aliases' => [
-        '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
-    ],
-    'components' => [
-        'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '',
-        ],
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
-        ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
-        'db' => [
-			'class' => 'yii\db\Connection',
-			'dsn' => 'database:host=localhost;dbname=yii2basic',
-			'username' => 'root',
-			'password' => 'rootpass',
-			'charset' => 'utf8',
-
-			// Schema cache options (for production environment)
-			//'enableSchemaCache' => true,
-			//'schemaCacheDuration' => 60,
-			//'schemaCache' => 'cache',
-		],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
-    ],
-    'params' => [
-		'adminEmail' => 'admin@example.com',
-		'senderEmail' => 'noreply@example.com',
-		'senderName' => 'Example.com mailer',
-	],
-];
-
-if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = [
-        'class' => 'yii\debug\Module',
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
-    ];
-
-    $config['bootstrap'][] = 'gii';
-    $config['modules']['gii'] = [
-        'class' => 'yii\gii\Module',
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
-    ];
+    $url = parse_url(urldecode($_SERVER['REQUEST_URI']));
+    $file = __DIR__ . $url['path'];
+    if (strpos($url['path'], '..') === false && strpos($url['path'], '.') !== false && is_file($file)) {
+        return false;
+    }
 }
+require '/app/basic/vendor/autoload.php';
 
-(new yii\web\Application($config))->run();
+use App\Application;
+use Cake\Http\Server;
+
+// Bind your application to the server.
+$server = new Server(new Application('/app/basic/config'));
+
+// Run the request/response through the application and emit the response.
+$server->emit($server->run());
