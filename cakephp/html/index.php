@@ -16,7 +16,7 @@
  */
 
 // Check platform requirements
-require '/app/basic/config/requirements.php';
+require 'basic/config/requirements.php';
 
 // For built-in server
 if (PHP_SAPI === 'cli-server') {
@@ -28,13 +28,13 @@ if (PHP_SAPI === 'cli-server') {
         return false;
     }
 }
-require '/app/basic/vendor/autoload.php';
+require 'basic/vendor/autoload.php';
 
 use App\Application;
 use Cake\Http\Server;
 
 // Bind your application to the server.
-$server = new Server(new Application('/app/basic/config'));
+$server = new Server(new Application('basic/config'));
 
 // Run the request/response through the application and emit the response.
 $server->emit($server->run());
