@@ -29,7 +29,8 @@ services:
             TZ: '${LOCAL_TIMEZONE}'
         labels:            
             - 'docker-volume-backup.stop-during-backup=true'
-        command: bash -c "curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && [ \"$$(ls -A ./basic)\" ] && composer update --prefer-dist cakephp/app:~4.0 --working-dir=./basic --no-interaction --with-all-dependencies || composer create-project --prefer-dist cakephp/app:~4.0 basic --no-interaction && php-fpm"
+        command: bash -c "apt -y update && apt install -y zip unzip libicu-dev && docker-php-ext-configure intl && docker-php-ext-install intl && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && 
+            [ \"$$(ls -A /app/basic)\" ] && composer require --update-with-dependencies "cakephp/cakephp:~4.0" --working-dir=/app/basic --no-interaction || composer create-project --prefer-dist cakephp/app:~4.0 basic --working-dir=/app --no-interaction && php-fpm"
 
     webserver:
         depends_on:
