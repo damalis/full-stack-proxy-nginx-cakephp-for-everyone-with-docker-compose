@@ -180,11 +180,10 @@ docker-compose up -d
 
 ### Website
 
-You should see the "Congratulations!" page in your browser. If not, please check if your PHP installation satisfies Yii's requirements.
-You can check if the minimum requirements are met using one of the following approaches:
+You should see the "Welcome to CakePHP..." page in your browser. If not, please check if your PHP installation satisfies Cakephp's requirements.
 
 ```
-https://example.com/requirements.php
+https://example.com
 ```
 
 add or remove code in the ./php-fpm/php/conf.d/security.ini file for custom php.ini configurations
@@ -210,20 +209,17 @@ add and/or remove cakephp site folders and files with any ftp client program in 
 
 #### Redis
 
-add [Redis Cache](https://github.com/yiisoft/yii2-redis) plugin and must add below code to config file.
+see [Redis Cache](https://book.cakephp.org/4/en/core-libraries/caching.html#redisengine-options) options and must add below code to config file.
 
 ```
-return [
-    //....
-    'components' => [
-        'redis' => [
-            'class' => 'yii\redis\Connection',
-            'hostname' => 'redis',
-            'port' => 6379,
-            'database' => 0,
-        ],
-    ]
-];
+Cache::setConfig('redis', [
+    'className' => 'Redis',
+    'duration' => '+1 hours',
+    'prefix' => 'cake_redis_',
+    'host' => 'redis',
+    'port' => 6379,
+    'fallback' => 'default',
+]);
 ```
 
 ### phpMyAdmin
