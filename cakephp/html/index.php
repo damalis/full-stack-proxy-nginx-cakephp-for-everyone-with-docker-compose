@@ -32,6 +32,9 @@ require 'basic/vendor/autoload.php';
 
 use App\Application;
 use Cake\Http\Server;
+use Cake\Core\Configure;
+
+Configure::write('DebugKit.forceEnable', true);
 
 // Bind your application to the server.
 $server = new Server(new Application('basic/config'));
