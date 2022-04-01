@@ -30,7 +30,7 @@ services:
         labels:            
             - 'docker-volume-backup.stop-during-backup=true'
         command: bash -c "curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && ([ '$$(ls -A /app/basic)' ] && composer require --update-with-dependencies 'cakephp/cakephp:~4.0' --working-dir=/app/basic --no-interaction || composer create-project --prefer-dist cakephp/app:~4.0 basic --working-dir=/app --no-interaction) && 
-            find /app/basic/webroot/* -type d -exec cp -rt ${WEBSERVER_DOC_ROOT} {} + && cp /app/basic/webroot/.htaccess ${WEBSERVER_DOC_ROOT} && apt-get -y update && apt-get install -y zip unzip libicu-dev && docker-php-ext-configure intl && docker-php-ext-install intl && php-fpm"
+            find /app/basic/webroot/* -type d -exec cp -rt ${WEBSERVER_DOC_ROOT} {} + && cp /app/basic/webroot/.htaccess ${WEBSERVER_DOC_ROOT} && apt-get -y update && apt-get install -y zip unzip libicu-dev && docker-php-ext-install intl pdo_mysql && php-fpm"
 
     webserver:
         depends_on:
