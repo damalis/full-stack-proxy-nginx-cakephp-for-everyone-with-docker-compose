@@ -187,13 +187,7 @@ You should see the "Welcome to CakePHP..." page in your browser. If not, please 
 https://example.com
 ```
 
-```
-cp ./cakephp/app/basic/config/app_local.example.php ./cakephp/app/basic/config/app_local.php
-```
-
-modify with below configuration values in the ./cakephp/html/config/app_local.php file.
-
-Datasources => default => host = 'database'
+modify with below configuration values in the /app/basic/config/app_local.php file.
 
 Datasources => default => username = ${DB_USER}
 
