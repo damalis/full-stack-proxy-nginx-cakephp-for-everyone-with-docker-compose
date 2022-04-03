@@ -29,8 +29,8 @@ services:
             TZ: '${LOCAL_TIMEZONE}'
         labels:            
             - 'docker-volume-backup.stop-during-backup=true'
-        command: bash -c "apt-get -y update && apt-get install -y zip unzip libicu-dev && docker-php-ext-install pdo_mysql intl && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && if[ \"$$(ls -A /app/basic)\" ]; then composer require --update-with-dependencies cakephp/cakephp:~4.0 --working-dir=/app/basic --no-interaction; else composer create-project --prefer-dist cakephp/app:~4.0 basic --working-dir=/app --no-interaction; fi && 
-            sed -i \"s/__SALT__/$$(tr -dc 'a-zA-Z0-9~!@#$$%^&*_()+}{?></\";.,[]=-' < /dev/urandom | fold -w 32 | head -n 1)\" ${WEBSERVER_DOC_ROOT}/config/app_local.php && php-fpm"
+        command: bash -c "apt-get -y update && apt-get install -y zip unzip libicu-dev && docker-php-ext-install pdo_mysql intl && pecl install redis && docker-php-ext-enable redis && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && if[ \"$$(ls -A /app/basic)\" ]; then composer require --update-with-dependencies cakephp/cakephp:~4.0 --working-dir=/app/basic --no-interaction --ignore-platform-req=ext-intl; else composer create-project --prefer-dist cakephp/app:~4.0 basic --working-dir=/app --no-interaction --ignore-platform-req=ext-intl; fi && 
+            cp ${WEBSERVER_DOC_ROOT}/app_local.php /app/basic/config/app_local.php && sed -i \"s/__SALT__/$$(tr -dc 'a-zA-Z0-9~!@#$$%^&*_()+}{?></;.,[]=-' < /dev/urandom | fold -w 32 | head -n 1)/\" /app/basic/config/app_local.php && php-fpm"
 
     webserver:
         depends_on:
