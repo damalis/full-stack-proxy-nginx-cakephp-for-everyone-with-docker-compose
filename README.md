@@ -98,6 +98,7 @@ and
 ```
 cp ./phpmyadmin/apache2/sites-available/default-ssl.sample.conf ./phpmyadmin/apache2/sites-available/default-ssl.conf
 ```
+
 change example.com to your domain name in ```./phpmyadmin/apache2/sites-available/default-ssl.conf``` file.
 
 ## Installation
@@ -185,6 +186,20 @@ You should see the "Welcome to CakePHP..." page in your browser. If not, please 
 ```
 https://example.com
 ```
+
+```
+cp ./cakephp/app/basic/config/app_local.example.php ./cakephp/app/basic/config/app_local.php
+```
+
+modify with below configuration values in the ./cakephp/html/config/app_local.php file.
+
+Datasources => default => host = 'database'
+
+Datasources => default => username = ${DB_USER}
+
+Datasources => default => password = ${DB_PASSWORD}
+
+Datasources => default => database = ${DB_NAME}
 
 add or remove code in the ./php-fpm/php/conf.d/security.ini file for custom php.ini configurations
 
