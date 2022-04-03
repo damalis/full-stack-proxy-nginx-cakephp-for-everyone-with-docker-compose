@@ -165,15 +165,7 @@ endif;
                             <li class="bullet success">CakePHP is able to connect to the database.</li>
                         <?php else : ?>
                             <li class="bullet problem">CakePHP is NOT able to connect to the database.<br /><?= h($result['error']) ?></li>
-						<?php endif; ?>
-						<?php
-						$result = Cache::pool('RedisEngine');
-                        ?>
-                        <?php if ($result) : ?>
-							<li class="bullet success">CakePHP is able to connect to the redis server.</li>
-                        <?php else: ?>
-							<li class="bullet problem">CakePHP is NOT able to connect to the redis server.<br /><?= h($result['error']) ?></li>
-                        <?php endif; ?>                        
+						<?php endif; ?>						                        
                         </ul>
                     </div>
                     <div class="column">
