@@ -44,9 +44,11 @@ Contents:
 ### Exec install shell script for auto installation and configuration
 
 download with
+
 ```
 git clone https://github.com/damalis/full-stack-cakephp-for-everyone-with-docker-compose.git
 ```
+
 Open a terminal and `cd` to the folder in which `docker-compose.yml` is saved and run:
 
 ```
@@ -128,6 +130,8 @@ manage docker with [Portainer](https://www.portainer.io/solutions/docker) is the
 
 You can also visit `https://example.com:9001` to access portainer after starting the containers.
 
+#### could manage docker containers with portainer without command line.
+
 ## Usage
 
 ### Starting containers
@@ -187,14 +191,6 @@ You should see the "Welcome to CakePHP..." page in your browser. If not, please 
 https://example.com
 ```
 
-modify with below configuration values in the /app/basic/config/app_local.php file.
-
-Datasources => default => username = ${DB_USER}
-
-Datasources => default => password = ${DB_PASSWORD}
-
-Datasources => default => database = ${DB_NAME}
-
 add or remove code in the ./php-fpm/php/conf.d/security.ini file for custom php.ini configurations
 
 Copy and paste the following code in the ./php-fpm/php-fpm.d/z-www.conf file for php-fpm configurations at 1Gb Ram Host
@@ -220,16 +216,7 @@ add and/or remove cakephp site folders and files with any ftp client program in 
 
 see [Redis Cache](https://book.cakephp.org/4/en/core-libraries/caching.html#redisengine-options) options and must add below code to config file.
 
-```
-Cache::setConfig('redis', [
-    'className' => 'Redis',
-    'duration' => '+1 hours',
-    'prefix' => 'cake_redis_',
-    'host' => 'redis',
-    'port' => 6379,
-    'fallback' => 'default',
-]);
-```
+modify redis cache configuration values in the /app/basic/config/app_local.php file.
 
 ### phpMyAdmin
 
