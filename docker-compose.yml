@@ -33,7 +33,7 @@ services:
             bash -c "apt-get -y update && apt-get install -y zip unzip libicu-dev && docker-php-ext-install pdo_mysql intl && pecl install redis && docker-php-ext-enable redis && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && 
             if [ \"$$(ls -A /app/basic)\" ]; then composer require --update-with-dependencies cakephp/cakephp:~4.0 --working-dir=/app/basic --no-interaction --ignore-platform-req=ext-intl; else composer create-project --prefer-dist cakephp/app:~4.0 basic --working-dir=/app --no-interaction --ignore-platform-req=ext-intl; fi && 
             grep -qxF 'date.timezone = ${LOCAL_TIMEZONE}' ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini || echo -e 'date.timezone = ${LOCAL_TIMEZONE}' >> ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini && 
-            sed -i 's/DB_USER/${DB_USER}/; s/DB_PASS/${DB_PASS}/; s/DB_NAME/${DB_NAME}/; s/__SALT__/$$(tr -dc \'a-zA-Z0-9~!@#$$%^&*_()+}{?></;.,[]=-\' < /dev/urandom | fold -w 32 | head -n 1)/' ${WEBSERVER_DOC_ROOT}/app_local.php && cp ${WEBSERVER_DOC_ROOT}/app_local.php /app/basic/config/app_local.php && php-fpm"
+            sed -i 's/DB_USER/${DB_USER}/; s/DB_PASSWORD/${DB_PASSWORD}/; s/DB_NAME/${DB_NAME}/; s/__SALT__/$$(tr -dc \'a-zA-Z0-9~!@#$$%^&*_()+}{?></;.,[]=-\' < /dev/urandom | fold -w 32 | head -n 1)/' ${WEBSERVER_DOC_ROOT}/app_local.php && cp ${WEBSERVER_DOC_ROOT}/app_local.php /app/basic/config/app_local.php && php-fpm"
 
     webserver:
         depends_on:
