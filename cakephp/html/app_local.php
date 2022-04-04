@@ -36,7 +36,7 @@ return [
      *   paths for plugins, view templates and locale files respectively.
      */
 	
-	'App' => [
+    'App' => [
         'paths' => [
             'plugins' => [ROOT . DS . 'plugins' . DS],
             'templates' => ['/var/www/html/templates/'],
@@ -52,7 +52,7 @@ return [
      */
     'Datasources' => [
         'default' => [
-			'driver' => Mysql::class,
+            'driver' => Mysql::class,
             'host' => 'database',
             /*
              * CakePHP will use the default DB port based on the driver selected
@@ -81,7 +81,7 @@ return [
          * The test connection is used during the test suite.
          */
         'test' => [
-			'driver' => Mysql::class,
+            'driver' => Mysql::class,
             'host' => 'localhost',
             //'port' => 'non_standard_port_number',
             'username' => 'my_app',
