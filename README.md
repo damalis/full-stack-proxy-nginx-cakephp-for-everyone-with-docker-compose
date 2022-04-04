@@ -191,9 +191,9 @@ You should see the "Welcome to CakePHP..." page in your browser. If not, please 
 https://example.com
 ```
 
-add or remove code in the ./php-fpm/php/conf.d/security.ini file for custom php.ini configurations
+add or remove code in the ```./php-fpm/php/conf.d/security.ini``` file for custom php.ini configurations
 
-Copy and paste the following code in the ./php-fpm/php-fpm.d/z-www.conf file for php-fpm configurations at 1Gb Ram Host
+Copy and paste the following code in the ```./php-fpm/php-fpm.d/z-www.conf``` file for php-fpm configurations at 1Gb Ram Host
 
 ```
 pm.max_children = 19
@@ -216,11 +216,11 @@ add and/or remove cakephp site folders and files with any ftp client program in 
 
 see [Redis Cache](https://book.cakephp.org/4/en/core-libraries/caching.html#redisengine-options) options and must add below code to config file.
 
-modify redis cache configuration values in the /app/basic/config/app_local.php file.
+modify redis cache configuration values in the ```/app/basic/config/app_local.php``` file.
 
 ### phpMyAdmin
 
-You can add your own custom config.inc.php settings (such as Configuration Storage setup) by creating a file named config.user.inc.php with the various user defined settings in it, and then linking it into the container using:
+could add/remove config.inc.php settings (such as Configuration Storage setup) with the various user defined settings in it:
 
 ```
 ./phpmyadmin/config.user.inc.php
