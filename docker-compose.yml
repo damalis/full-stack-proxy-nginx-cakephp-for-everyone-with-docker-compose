@@ -32,8 +32,8 @@ services:
         command: >
             bash -c "apt-get -y update && apt-get install -y zip unzip libicu-dev && docker-php-ext-install pdo_mysql intl && pecl install redis && docker-php-ext-enable redis && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer 
             && if [ \"$$(ls -A /app/basic)\" ]; then composer update --prefer-dist cakephp/cakephp:~4.0 --working-dir=/app/basic --no-interaction --ignore-platform-req=ext-intl; else composer create-project --prefer-dist cakephp/app:~4.0 basic --working-dir=/app --no-interaction --ignore-platform-req=ext-intl; fi 
-            && sed -ie \"s/DB_USER/${DB_USER}/; s/DB_PASSWORD/${DB_PASSWORD}/; s/DB_NAME/${DB_NAME}/; s/__SALT__/$$(tr -dc 'A-Za-z0-9!#$$%&()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c 32 ; echo)/\" ${WEBSERVER_DOC_ROOT}/app_local.php && cp ${WEBSERVER_DOC_ROOT}/app_local.php /app/basic/config/app_local.php 
-            && grep -q -e 'date.timezone = ${LOCAL_TIMEZONE}' ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini || echo 'date.timezone = ${LOCAL_TIMEZONE}' >> ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini && php-fpm"
+            && sed -ie \"s/DB_USER/${DB_USER}/; s/DB_PASSWORD/${DB_PASSWORD}/; s/DB_NAME/${DB_NAME}/; s/__SALT__/$$(tr -dc 'A-Za-z0-9!#$$%&()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c 32 ; echo)/\" ${WEBSERVER_DOC_ROOT}/app_local.php && cp ${WEBSERVER_DOC_ROOT}/app_local.php /app/basic/config/app_local.php; 
+            grep -qe 'date.timezone = ${LOCAL_TIMEZONE}' ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini || echo 'date.timezone = ${LOCAL_TIMEZONE}' >> ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini; php-fpm"
 
     webserver:
         depends_on:
@@ -70,8 +70,8 @@ services:
         restart: unless-stopped        
         environment:
             TZ: '${LOCAL_TIMEZONE}'
-        entrypoint: /bin/sh -c "certbot certonly --webroot --webroot-path /tmp/acme-challenge --rsa-key-size 4096 --non-interactive --agree-tos --no-eff-email --force-renewal --email ${LETSENCRYPT_EMAIL} -d ${DOMAIN_NAME} -d www.${DOMAIN_NAME} 
-            && trap exit TERM && while :; do certbot renew --dry-run; sleep 12h & wait $${!}; done;"
+        entrypoint: /bin/sh -c "certbot certonly --webroot --webroot-path /tmp/acme-challenge --rsa-key-size 4096 --non-interactive --agree-tos --no-eff-email --force-renewal --email ${LETSENCRYPT_EMAIL} -d ${DOMAIN_NAME} -d www.${DOMAIN_NAME}; 
+            trap exit TERM; while :; do certbot renew --dry-run; sleep 12h & wait $${!}; done;"
 
     proxy:
         depends_on:
@@ -107,7 +107,7 @@ services:
             TZ: '${LOCAL_TIMEZONE}'            
         labels:            
             - "docker-volume-backup.stop-during-backup=true"
-        command: bash -c "/docker-entrypoint.sh nginx -v && sh /tmp/ssl-proxyconf.sh '${DOMAIN_NAME}' '${LETSENCRYPT_CONF_PREFIX}' '${PROXY_PREFIX}'"
+        command: bash -c "/docker-entrypoint.sh nginx -v; sh /tmp/ssl-proxyconf.sh '${DOMAIN_NAME}' '${LETSENCRYPT_CONF_PREFIX}' '${PROXY_PREFIX}'"
     
     phpmyadmin:
         depends_on:
@@ -153,11 +153,10 @@ services:
             - "docker-volume-backup.stop-during-backup=true"
         command: >
             bash -c "echo ${PMA_HTPASSWD_USERNAME}:phpmyadmin:$$( printf \"%s:%s:%s\" \"${PMA_HTPASSWD_USERNAME}\" \"phpmyadmin\" \"${PMA_HTPASSWD_PASSWORD}\" | md5sum | awk '{print $$1}' ) > ${PMA_CONF_FOLDER}/.htpasswd 
-            && printf 'AuthType Digest\nAuthName \"phpmyadmin\"\nAuthDigestProvider file\nAuthUserFile ${PMA_CONF_FOLDER}/.htpasswd\nRequire valid-user\n' > ${WEBSERVER_DOC_ROOT}/.htaccess 
-            && mkdir -p ${WEBSERVER_DOC_ROOT}/../upload && chown www-data:www-data ${WEBSERVER_DOC_ROOT}/../upload && chmod a+w ${WEBSERVER_DOC_ROOT}/../upload && mkdir -p ${WEBSERVER_DOC_ROOT}/../save && a2enmod auth_digest 
-            && chown www-data:www-data ${WEBSERVER_DOC_ROOT}/../save && chmod a+w ${WEBSERVER_DOC_ROOT}/../save && grep -qxF 'ServerName 127.0.0.1' ${APACHE_CONFDIR}/apache2.conf || echo -e '\nServerName 127.0.0.1' >> ${APACHE_CONFDIR}/apache2.conf
-            && grep -q -e 'date.timezone = ${LOCAL_TIMEZONE}' ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini || echo 'date.timezone = ${LOCAL_TIMEZONE}' >> ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini 
-            && a2enmod ssl && a2ensite default-ssl && a2dissite 000-default && /docker-entrypoint.sh 'apache2-foreground'"
+            && printf 'AuthType Digest\nAuthName \"phpmyadmin\"\nAuthDigestProvider file\nAuthUserFile ${PMA_CONF_FOLDER}/.htpasswd\nRequire valid-user\n' > ${WEBSERVER_DOC_ROOT}/.htaccess && a2enmod auth_digest; 
+            mkdir -p ${WEBSERVER_DOC_ROOT}/../upload && chown www-data:www-data ${WEBSERVER_DOC_ROOT}/../upload && chmod a+w ${WEBSERVER_DOC_ROOT}/../upload && mkdir -p ${WEBSERVER_DOC_ROOT}/../save && chown www-data:www-data ${WEBSERVER_DOC_ROOT}/../save && chmod a+w ${WEBSERVER_DOC_ROOT}/../save; 
+            grep -qxF 'ServerName 127.0.0.1' ${APACHE_CONFDIR}/apache2.conf || echo -e '\nServerName 127.0.0.1' >> ${APACHE_CONFDIR}/apache2.conf; grep -qe 'date.timezone = ${LOCAL_TIMEZONE}' ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini || echo 'date.timezone = ${LOCAL_TIMEZONE}' >> ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini; 
+            a2enmod ssl && a2ensite default-ssl && a2dissite 000-default && /docker-entrypoint.sh 'apache2-foreground'"
     
     database:
         image: '${DATABASE_IMAGE_NAME}:${DATABASE_VERSION}'
