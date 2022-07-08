@@ -120,7 +120,7 @@ docker-compose up -d
 then reloading for proxy ssl configuration
 
 ```
-docker exec proxy nginx -s reload
+docker container restart <proxy_container_id>
 ```
 
 The containers are now built and running. You should be able to access the Cakephp installation with the configured IP in the browser address. `https://example.com`.
