@@ -230,7 +230,7 @@ FPM uses php.ini syntax for its configuration file - php-fpm.conf, and pool conf
 docker container restart cakephp
 ```
 
-add and/or remove wordpress site folders and files with any ftp client program in ```./wordpress``` folder.
+add and/or remove cakephp site folders and files with any ftp client program in ```./cakephp/html``` folder.
 <br />You can also visit `https://example.com` to access website after starting the containers.
 
 #### Proxy
