@@ -243,6 +243,8 @@ Proxying is typically used to distribute the load among several servers, seamles
 
 add or remove code in the ```./webserver/extra/httpd-vhosts.conf``` file for custom apache2/httpd configurations
 
+[https://httpd.apache.org/docs/2.4/](https://httpd.apache.org/docs/2.4/)
+
 #### Redis
 
 see [Redis Cache](https://book.cakephp.org/4/en/core-libraries/caching.html#redisengine-options) options and must add below code to config file.
