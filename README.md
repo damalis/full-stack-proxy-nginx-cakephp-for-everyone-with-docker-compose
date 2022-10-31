@@ -233,6 +233,8 @@ add and/or remove cakephp site folders and files with any ftp client program in 
 
 Proxying is typically used to distribute the load among several servers, seamlessly show content from different websites, or pass requests for processing to application servers over protocols other than HTTP.
 
+add or remove code in the ```./proxy/templates/proxy.conf.template``` file for custom proxy configurations
+
 [https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/)
 
 #### Webserver
