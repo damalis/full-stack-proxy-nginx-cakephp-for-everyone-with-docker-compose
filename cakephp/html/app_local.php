@@ -37,6 +37,7 @@ return [
      */
 	
     'App' => [
+		'fullBaseUrl' => 'https://' . env('HTTP_HOST'),
         'paths' => [
             'plugins' => [ROOT . DS . 'plugins' . DS],
             'templates' => ['/var/www/html/templates/'],
