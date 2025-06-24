@@ -11,7 +11,7 @@ if [ ! -f $2/ssl-dhparam.pem 2>/dev/null ]; then
 fi
 
 use_lets_encrypt_certificates() {
-	echo "switching nginx to use Let's Encrypt certificate for $1"	
+	echo "switching proxy to use Let's Encrypt certificate for $1"	
 	sed '/#location.\/./,/#}/ s/#//; s/#listen/listen/g; s/#ssl_/ssl_/g' $3/conf.d/default.conf > $3/conf.d/default.conf.bak
 }
 
@@ -31,7 +31,7 @@ wait_for_lets_encrypt() {
 			sleep 5s & wait ${!}
 			if [ -d "$2/live/$1" ]; then break; fi
 		done
-	fi;	
+	fi;
 	use_lets_encrypt_certificates "$1" "$2" "$3"
 	reload_proxy "$3"
 }
