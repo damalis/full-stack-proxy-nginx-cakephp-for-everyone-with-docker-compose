@@ -298,7 +298,7 @@ You should make changes custom host configurations ```./php-fpm/php-fpm.d/z-www.
 docker container restart cakephp
 ```
 
-add and/or remove cakephp site folders and files with any ftp client program in ```./cakephp/html``` folder.
+add and/or remove cakephp site folders and files with any ftp client program in ```./cakephp/webroot``` folder.
 <br />You can also visit `https://example.com` to access website after starting the containers.
 
 #### Proxy
